@@ -1,11 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import Pagination from '@/components/Pagination.vue';
 
 const categories = ref({})
 const products = ref({})
 
 const getCategories = async () => {
-	await fetch('http://demo.test/api/categories')
+	await fetch('http://api.test/api/categories')
 		.then(response => response.json())
 		.then(data => {
 			categories.value = data.data
@@ -13,11 +14,11 @@ const getCategories = async () => {
 		.catch((error) => console.log(error))
 }
 
-const getProducts = async () => {
-	await fetch('http://demo.test/api/products')
+const getProducts = async (page = 1) => {
+	await fetch(`http://api.test/api/products?page=${page}`)
 		.then(response => response.json())
 		.then(data => {
-			products.value = data.data
+			products.value = data
 		})
 		.catch((error) => console.log(error))
 }
@@ -37,9 +38,11 @@ onMounted(() => {
 		</ul>
 		
 		<ul>
-			<li v-for="product in products" :key="product.id">
+			<li v-for="product in products.data" :key="product.id">
 				<strong>{{ product.name }}</strong> ${{ product.price }} <em>({{ product.category.name }})</em>
 			</li>
 		</ul>
+		
+		<Pagination :pagination="products.meta" @page-change="getProducts" />
 	</div>
 </template>

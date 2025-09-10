@@ -1,10 +1,11 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
 const form = reactive({})
+const errors = ref({})
 
 const save = async () => {
-	fetch('http://api.test/api/categories/', {
+	const response = await fetch('http://api.test/api/categories/', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -13,12 +14,15 @@ const save = async () => {
 		},
 		body: JSON.stringify(form)
 	})
-		.then(response => response.json())
-		.then(response => {
-			// Do something with response.
-			// Redirect to another page.
-			console.log(response.data)
-		});
+	
+	const data = await response.json()
+	
+	if (response.ok) {
+		// Do something with response.
+		// Redirect to another page.
+	} else {
+		errors.value = data.errors;
+	}
 }
 </script>
 
@@ -28,6 +32,7 @@ const save = async () => {
 			<div>
 				<label class="block" for="name">Name</label>
 				<input v-model="form.name" type="text" name="name" id="name" class="border border-gray-300 rounded p-2" />
+				<div v-if="errors.name" class="text-xs text-rose-400">{{ errors.name[0] }}</div>
 			</div>
 			
 			<div>

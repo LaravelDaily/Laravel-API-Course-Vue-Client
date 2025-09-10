@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from '@/views/auth/RegisterView.vue';
 import LoginView from '@/views/auth/LoginView.vue';
 import ProtectedView from '@/views/ProtectedView.vue';
+import CreateView from '@/views/categories/CreateView.vue';
 
 function auth(to, from, next) {
     const isAuthenticated = !!localStorage.getItem('access_token')
@@ -54,6 +55,11 @@ const router = createRouter({
             name: 'protected',
             component: ProtectedView,
             beforeEnter: auth,
+        },
+        {
+            path: '/categories/create',
+            name: 'categories.create',
+            component: CreateView,
         },
     ],
 })

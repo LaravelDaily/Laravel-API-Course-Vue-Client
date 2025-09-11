@@ -4,6 +4,7 @@ import RegisterView from '@/views/auth/RegisterView.vue';
 import LoginView from '@/views/auth/LoginView.vue';
 import ProtectedView from '@/views/ProtectedView.vue';
 import CreateView from '@/views/categories/CreateView.vue';
+import EditView from '@/views/categories/EditView.vue';
 
 function auth(to, from, next) {
     const isAuthenticated = !!localStorage.getItem('access_token')
@@ -60,6 +61,11 @@ const router = createRouter({
             path: '/categories/create',
             name: 'categories.create',
             component: CreateView,
+        },
+        {
+            path: '/categories/:id/edit',
+            name: 'categories.edit',
+            component: EditView,
         },
     ],
 })
